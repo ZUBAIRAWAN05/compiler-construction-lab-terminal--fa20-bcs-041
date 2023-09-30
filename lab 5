@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace LAB5_005
+{
+    public partial class Form1 : Form
+    {
+        private Dictionary<string, string> symbolTable;
+
+        public Form1()
+        {
+            InitializeComponent();
+            symbolTable = new Dictionary<string, string>();
+            InitializeDataGridView();
+        }
+
+        private void InitializeDataGridView()
+        {
+            dataGridView1.Columns.Add("Key", "Key");
+            dataGridView1.Columns.Add("Value", "Value");
+        }
+
+        private void button1_Click(object sender, EventArgs e) // "Add" button
+        {
+            string key = textBox1.Text;
+            string value = textBox2.Text;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show("Key cannot be empty.");
+            }
+            else if (symbolTable.ContainsKey(key))
+            {
+                MessageBox.Show("Key already exists.");
+            }
+            else
+            {
+                symbolTable[key] = value;
+                textBox1.Clear();
+                textBox2.Clear();
+                UpdateDataGridView();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e) // "Search" button
+        {
+            string key = textBox1.Text;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show("Key cannot be empty.");
+            }
+            else if (symbolTable.ContainsKey(key))
+            {
+                string value = symbolTable[key];
+                MessageBox.Show($"Value for key '{key}': {value}");
+            }
+            else
+            {
+                MessageBox.Show("Key not found.");
+            }
+        }
+
+        private void UpdateDataGridView()
+        {
+            dataGridView1.Rows.Clear();
+
+            foreach (var pair in symbolTable)
+            {
+                dataGridView1.Rows.Add(pair.Key, pair.Value);
+            }
+        }
+    }
+}
